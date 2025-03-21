@@ -63,4 +63,8 @@ class LibraryManager {
             println("Вы не брали этот объект")
         }
     }
+
+    fun addDigitizedItem(disc: Disc) {
+        items.add(disc)
+    }
 }

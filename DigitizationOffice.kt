@@ -1,18 +1,24 @@
+
 package com.example.library
 
 import com.example.library.kotlin.Digitalizable
 
-class DigitizationOffice {
-    private var discIdCounter = 1 // Начнем нумерацию дисков с 1
-    fun digitize(item: Digitalizable): Disc {
+class DigitizationOffice<T> where T : LibraryItem, T : Digitalizable {
+    private var discIdCounter = 1
+
+    fun digitize(item: T): Disc {
         val digitalInfo = item.getDigitalInfo()
-        val newDisc = Disc(
+        return Disc(
             discIdCounter++,
             true,
             "CD с цифровой копией: ${item.name}",
             "CD"
-        ) // Создаем CD диск
-        println("Создан CD диск: ${newDisc.name} с информацией: $digitalInfo")
-        return newDisc
+        ).also {
+            println("Создан CD диск: ${it.name} с информацией: $digitalInfo")
+        }
+    }
+
+    fun digitizeAll(items: List<T>): List<Disc> {
+        return items.map { digitize(it) }
     }
 }

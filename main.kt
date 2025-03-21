@@ -1,6 +1,9 @@
+import com.example.library.Book
 import com.example.library.LibraryManager
 import com.example.library.BookStore
+import com.example.library.DigitizationOffice
 import com.example.library.DiscStore
+import com.example.library.Newspaper
 import com.example.library.NewspaperKiosk
 import java.util.Scanner
 
@@ -9,19 +12,25 @@ fun main() {
     val manager = LibraryManager()
     val storeManager = Manager() // Создаем экземпляр менеджера
 
+    // Пример использования кабинета оцифровки
+    val bookDigitizer = DigitizationOffice<Book>()
+    val newspaperDigitizer = DigitizationOffice<Newspaper>()
+
     while (true) {
         println("Выберите действие:")
         println("1. Показать книги")
         println("2. Показать газеты")
         println("3. Показать диски")
-        println("4. Менеджер") // Новый пункт меню для менеджера
-        println("5. Выйти")
+        println("4. Менеджер")
+        println("5. Оцифровка")
+        println("6. Выйти")
         when (scanner.nextInt()) {
             1 -> manageItems("книги", manager, scanner)
             2 -> manageItems("газеты", manager, scanner)
             3 -> manageItems("диски", manager, scanner)
-            4 -> manageManagerActions(storeManager, scanner) // Управление менеджером
-            5 -> return
+            4 -> manageManagerActions(storeManager, scanner)
+            5 -> manageDigitization(manager, scanner)
+            6 -> return
             else -> println("Неверный ввод")
         }
     }
@@ -52,19 +61,31 @@ fun manageBuying(storeManager: Manager, scanner: Scanner) {
 
         when (scanner.nextInt()) {
             1 -> {
-                val bookStore = BookStore()
-                val purchasedBook = storeManager.buy(bookStore)
-                println("Купленная книга: ${purchasedBook.getDetailedInfo()}")
+                try {
+                    val bookStore = BookStore()
+                    val purchasedBook = storeManager.buy(bookStore)
+                    println("Купленная книга: ${purchasedBook.getDetailedInfo()}")
+                } catch (e: Exception) {
+                    println("Ошибка при покупке: ${e.message}")
+                }
             }
             2 -> {
-                val discStore = DiscStore()
-                val purchasedDisc = storeManager.buy(discStore)
-                println("Купленный диск: ${purchasedDisc.getDetailedInfo()}")
+                try {
+                    val discStore = DiscStore()
+                    val purchasedDisc = storeManager.buy(discStore)
+                    println("Купленный диск: ${purchasedDisc.getDetailedInfo()}")
+                } catch (e: Exception) {
+                    println("Ошибка при покупке: ${e.message}")
+                }
             }
             3 -> {
-                val newspaperKiosk = NewspaperKiosk()
-                val purchasedNewspaper = storeManager.buy(newspaperKiosk)
-                println("Купленная газета: ${purchasedNewspaper.getDetailedInfo()}")
+                try {
+                    val newspaperKiosk = NewspaperKiosk()
+                    val purchasedNewspaper = storeManager.buy(newspaperKiosk)
+                    println("Купленная газета: ${purchasedNewspaper.getDetailedInfo()}")
+                } catch (e: Exception) {
+                    println("Ошибка при покупке: ${e.message}")
+                }
             }
             4 -> return
             else -> println("Неверный ввод")
@@ -128,6 +149,47 @@ fun manageItems(type: String, manager: LibraryManager, scanner: Scanner) {
             }
 
             5 -> return
+            else -> println("Неверный ввод")
+        }
+    }
+}
+fun manageDigitization(manager: LibraryManager, scanner: Scanner) {
+    while (true) {
+        println("Выберите тип материала для оцифровки:")
+        println("1. Книга")
+        println("2. Газета")
+        println("3. Назад")
+
+        when (scanner.nextInt()) {
+            1 -> {
+                println("Выберите номер книги для оцифровки:")
+                manager.showItems("книги")
+                val index = scanner.nextInt()
+                val item = manager.selectItem(index, "книги")
+                if (item is Book) {
+                    val bookDigitizer = DigitizationOffice<Book>()
+                    val disc = bookDigitizer.digitize(item)
+                    manager.addDigitizedItem(disc)
+                    println("Книга успешно оцифрована и добавлена в библиотеку")
+                } else {
+                    println("Выбранный элемент не является книгой")
+                }
+            }
+            2 -> {
+                println("Выберите номер газеты для оцифровки:")
+                manager.showItems("газеты")
+                val index = scanner.nextInt()
+                val item = manager.selectItem(index, "газеты")
+                if (item is Newspaper) {
+                    val newspaperDigitizer = DigitizationOffice<Newspaper>()
+                    val disc = newspaperDigitizer.digitize(item)
+                    manager.addDigitizedItem(disc)
+                    println("Газета успешно оцифрована и добавлена в библиотеку")
+                } else {
+                    println("Выбранный элемент не является газетой")
+                }
+            }
+            3 -> return
             else -> println("Неверный ввод")
         }
     }

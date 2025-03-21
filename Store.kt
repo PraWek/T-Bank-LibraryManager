@@ -1,5 +1,7 @@
+
 package com.example.library
 
 interface Store {
-    fun sell(): LibraryItem
+    fun getAvailableItems(): List<LibraryItem>
+    fun sell(item: LibraryItem): LibraryItem
 }
