@@ -2,7 +2,7 @@ import com.example.library.LibraryItem
 import com.example.library.Store
 
 class Manager {
-    fun buy(store: Store): LibraryItem {
+    fun buy(store: Store<out LibraryItem>): LibraryItem {
         val availableItems = store.getAvailableItems()
         println("\nДоступные товары:")
         availableItems.forEachIndexed { index, item ->

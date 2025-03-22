@@ -5,12 +5,11 @@ import com.example.library.DigitizationOffice
 import com.example.library.DiscStore
 import com.example.library.Newspaper
 import com.example.library.NewspaperKiosk
-import com.example.library.demonstrateTypeFiltering
+// import com.example.library.demonstrateTypeFiltering
 import java.util.Scanner
 
 fun main() {
-    // Demonstrate type filtering
-    demonstrateTypeFiltering()
+    // demonstrateTypeFiltering()
 
     val scanner = Scanner(System.`in`)
     val manager = LibraryManager()
