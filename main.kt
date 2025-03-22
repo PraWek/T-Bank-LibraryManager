@@ -17,6 +17,7 @@ fun main() {
     val storeManager = Manager() // Создаем экземпляр менеджера
 
     // Пример использования кабинета оцифровки
+
     // val bookDigitizer = DigitizationOffice<Book>()
     // val newspaperDigitizer = DigitizationOffice<Newspaper>()
 
